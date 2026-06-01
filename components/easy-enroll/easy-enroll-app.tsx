@@ -288,17 +288,17 @@ export function AKTUHubApp() {
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(56,189,248,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(99,102,241,0.08)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
         <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:py-14">
           <div className="animate-fade-up max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-blue-200">
-              <Sparkles className="size-3.5" aria-hidden="true" />
+            <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-blue-200 transition-all duration-300 hover:border-blue-300/50 hover:bg-blue-400/20 hover:shadow-lg hover:shadow-blue-500/20">
+              <Sparkles className="size-3.5 animate-spin transition-transform duration-300" aria-hidden="true" />
               AKTU digital ecosystem
             </div>
-            <h1 className="mt-5 text-balance text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-balance text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl transition-all duration-500 hover:text-transparent hover:bg-gradient-to-r hover:from-sky-300 hover:via-blue-400 hover:to-violet-400 hover:bg-clip-text">
               AKTUHub
               <span className="block bg-gradient-to-r from-sky-300 via-blue-400 to-violet-400 bg-clip-text text-transparent">
                 smart academic tools in one place.
               </span>
             </h1>
-            <p className="mt-5 max-w-2xl text-pretty text-base leading-8 text-slate-300 sm:text-lg">
+            <p className="mt-5 max-w-2xl text-pretty text-base leading-8 text-slate-300 sm:text-lg transition-all duration-300 hover:text-slate-200">
               Smart Solutions for AKTU Students & Faculty. Start with enrollment and
               document processing today, then grow into notes, PYQs, dashboards,
               calculators, geo-tag tools, placements, and AI-powered student services.
@@ -306,25 +306,25 @@ export function AKTUHubApp() {
           </div>
 
           <div className="animate-fade-up lg:justify-self-end" style={{ animationDelay: "100ms" }}>
-            <div className="relative mx-auto max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#030814] p-4 shadow-2xl shadow-blue-950/40">
+            <div className="group relative mx-auto max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#030814] p-4 shadow-2xl shadow-blue-950/40 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/30 hover:border-blue-400/30">
               <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/70 to-transparent" />
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src="/aktuhub-logo.png"
                 alt="AKTUHub official logo"
-                className="aspect-square w-full rounded-xl object-cover"
+                className="aspect-square w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-110"
               />
               <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-semibold text-slate-300">
-                <span className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2">
-                  <GraduationCap className="size-3.5 text-blue-300" aria-hidden="true" />
+                <span className="flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2 transition-all duration-300 hover:border-blue-400/50 hover:bg-blue-500/10 hover:text-blue-200 hover:scale-105">
+                  <GraduationCap className="size-3.5 text-blue-300 transition-transform duration-300" aria-hidden="true" />
                   Students
                 </span>
-                <span className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2">
-                  <BriefcaseBusiness className="size-3.5 text-violet-300" aria-hidden="true" />
+                <span className="flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2 transition-all duration-300 hover:border-violet-400/50 hover:bg-violet-500/10 hover:text-violet-200 hover:scale-105">
+                  <BriefcaseBusiness className="size-3.5 text-violet-300 transition-transform duration-300" aria-hidden="true" />
                   Faculty
                 </span>
-                <span className="flex items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2">
-                  <MapPin className="size-3.5 text-cyan-300" aria-hidden="true" />
+                <span className="flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2 transition-all duration-300 hover:border-cyan-400/50 hover:bg-cyan-500/10 hover:text-cyan-200 hover:scale-105">
+                  <MapPin className="size-3.5 text-cyan-300 transition-transform duration-300" aria-hidden="true" />
                   Geo Tools
                 </span>
               </div>

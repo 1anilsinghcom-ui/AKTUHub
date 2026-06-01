@@ -55,10 +55,10 @@ export function EnrollmentDashboard({ items }: { items: DocItem[] }) {
 
 function Score({ label, value }: { label: string; value: number }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-[#0e1729]/80 p-3">
+    <div className="rounded-lg border border-white/10 bg-[#0e1729]/80 p-3 transition-all duration-300 hover:border-cyan-300/40 hover:bg-[#0e1729] hover:shadow-lg hover:shadow-cyan-500/10 hover:scale-105">
       <div className="flex items-center justify-between text-xs">
-        <span className="font-semibold text-slate-400">{label}</span>
-        <span className="font-black text-white">{value}%</span>
+        <span className="font-semibold text-slate-400 transition-colors duration-300 group-hover:text-slate-300">{label}</span>
+        <span className="font-black text-white transition-colors duration-300 group-hover:text-cyan-200">{value}%</span>
       </div>
       <Progress value={value} className="mt-2 h-1.5" />
     </div>
@@ -67,25 +67,26 @@ function Score({ label, value }: { label: string; value: number }) {
 
 function Metric({ icon: Icon, label, value }: { icon: typeof Clock; label: string; value: number }) {
   return (
-    <div className="rounded-xl border border-white/10 bg-[#0e1729]/80 p-4">
-      <Icon className="size-4 text-cyan-300" aria-hidden="true" />
-      <p className="mt-3 text-2xl font-black text-white">{value}</p>
-      <p className="text-xs font-semibold text-slate-400">{label}</p>
+    <div className="rounded-xl border border-white/10 bg-[#0e1729]/80 p-4 transition-all duration-300 hover:border-cyan-300/50 hover:bg-[#0e1729] hover:shadow-xl hover:shadow-cyan-500/20 hover:scale-105">
+      <Icon className="size-4 text-cyan-300 transition-transform duration-300 group-hover:scale-125" aria-hidden="true" />
+      <p className="mt-3 text-2xl font-black text-white transition-colors duration-300 group-hover:text-cyan-200">{value}</p>
+      <p className="text-xs font-semibold text-slate-400 transition-colors duration-300 group-hover:text-slate-300">{label}</p>
     </div>
   )
 }
 
 function StatLine({ label, value }: { label: string; value: string }) {
   return (
-    <div className="rounded-lg border border-white/10 bg-white/[0.035] p-3">
-      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">{label}</p>
-      <p className="mt-1 text-sm font-bold text-slate-200">{value}</p>
+    <div className="rounded-lg border border-white/10 bg-white/[0.035] p-3 transition-all duration-300 hover:border-cyan-300/40 hover:bg-white/[0.06] hover:shadow-lg hover:shadow-cyan-500/10">
+      <p className="text-xs font-semibold uppercase tracking-wide text-slate-500 transition-colors duration-300 group-hover:text-slate-400">{label}</p>
+      <p className="mt-1 text-sm font-bold text-slate-200 transition-colors duration-300 group-hover:text-slate-100">{value}</p>
     </div>
   )
 }
 
 function statusClass(status: string) {
-  if (status === "Ready") return "w-fit rounded-full border border-emerald-300/25 bg-emerald-400/10 px-3 py-1.5 text-xs font-bold text-emerald-200"
-  if (status === "Needs Review") return "w-fit rounded-full border border-amber-300/25 bg-amber-400/10 px-3 py-1.5 text-xs font-bold text-amber-200"
-  return "w-fit rounded-full border border-red-300/25 bg-red-400/10 px-3 py-1.5 text-xs font-bold text-red-200"
+  const baseClass = "w-fit rounded-full px-3 py-1.5 text-xs font-bold transition-all duration-300 hover:scale-105"
+  if (status === "Ready") return `${baseClass} border border-emerald-300/25 bg-emerald-400/10 text-emerald-200 hover:border-emerald-300/60 hover:bg-emerald-400/20 hover:shadow-lg hover:shadow-emerald-500/20`
+  if (status === "Needs Review") return `${baseClass} border border-amber-300/25 bg-amber-400/10 text-amber-200 hover:border-amber-300/60 hover:bg-amber-400/20 hover:shadow-lg hover:shadow-amber-500/20`
+  return `${baseClass} border border-red-300/25 bg-red-400/10 text-red-200 hover:border-red-300/60 hover:bg-red-400/20 hover:shadow-lg hover:shadow-red-500/20`
 }

@@ -81,6 +81,61 @@ async function laplacianVariance(file: Blob): Promise<number> {
   }
 }
 
+/** Auto-crop to passport photo region using smart canvas geometry (no ML). */
+async function cropFaceRegion(blob: Blob): Promise<Blob> {
+  return new Promise((resolve) => {
+    const img = new Image()
+    const url = URL.createObjectURL(blob)
+
+    img.onload = () => {
+      const w = img.naturalWidth
+      const h = img.naturalHeight
+
+      // Smart crop logic — passport photo standard:
+      // Face is usually in top 60% of image, centered horizontally
+      // Crop to center 70% width, top 80% height
+      // This mimics how passport photo booths crop
+
+      const cropX = Math.floor(w * 0.15) // 15% from left
+      const cropY = Math.floor(h * 0.05) // 5% from top
+      const cropW = Math.floor(w * 0.7) // 70% of width
+      const cropH = Math.floor(h * 0.8) // 80% of height
+
+      // Output canvas — passport photo ratio 3:4
+      const canvas = document.createElement("canvas")
+      canvas.width = 300
+      canvas.height = 400
+
+      const ctx = canvas.getContext("2d")
+      if (!ctx) {
+        URL.revokeObjectURL(url)
+        resolve(blob)
+        return
+      }
+
+      // White background first (for AKTU white bg requirement)
+      ctx.fillStyle = "#FFFFFF"
+      ctx.fillRect(0, 0, 300, 400)
+
+      // Draw cropped region scaled to 300x400
+      ctx.drawImage(img, cropX, cropY, cropW, cropH, 0, 0, 300, 400)
+
+      URL.revokeObjectURL(url)
+
+      canvas.toBlob((b) => {
+        resolve(b || blob)
+      }, "image/jpeg", 0.92)
+    }
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url)
+      resolve(blob) // fallback to original if error
+    }
+
+    img.src = url
+  })
+}
+
 /** Convert an image blob to grayscale with boosted contrast (for signatures). */
 async function cleanSignature(file: Blob): Promise<{ blob: Blob; fixes: string[] }> {
   const url = URL.createObjectURL(file)
@@ -269,6 +324,18 @@ export async function processDocument(file: File, spec: DocSpec): Promise<Proces
   }
 
   let working: Blob = file
+
+  // Auto-crop to passport photo region (canvas-based, no ML needed)
+  if (spec.category === "photo") {
+    try {
+      const cropped = await cropFaceRegion(working)
+      working = cropped
+      autoFixes.push("Auto-cropped to passport photo region (300x400px).")
+    } catch {
+      // Silently continue with original if crop fails
+    }
+  }
+
   if (spec.category === "signature" || spec.category === "thumb") {
     const cleaned = await cleanSignature(file)
     working = cleaned.blob

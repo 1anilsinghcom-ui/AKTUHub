@@ -90,11 +90,11 @@ export function TabCard({ tab, active, onClick }: TabCardProps) {
       aria-pressed={active}
       className={cn(
         "group relative min-h-32 overflow-hidden rounded-xl border p-5 text-left transition-all duration-300",
-        "bg-white/[0.035] shadow-sm shadow-blue-950/20 hover:-translate-y-1 hover:border-cyan-300/45 hover:bg-white/[0.06]",
+        "bg-white/[0.035] shadow-sm shadow-blue-950/20 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-500/30 hover:border-cyan-300/60 hover:bg-white/[0.08]",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70",
         active
-          ? "scale-[1.02] border-cyan-300/80 bg-cyan-400/10 shadow-[0_0_34px_rgba(56,189,248,0.24)]"
-          : "border-white/10",
+          ? "scale-[1.03] border-cyan-300/80 bg-cyan-400/15 shadow-[0_0_34px_rgba(56,189,248,0.3)]"
+          : "border-white/10 hover:scale-105",
       )}
     >
       <span
@@ -105,12 +105,12 @@ export function TabCard({ tab, active, onClick }: TabCardProps) {
       />
       <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(56,189,248,0.10),transparent_42%,rgba(139,92,246,0.08))] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <span className="relative flex h-full flex-col justify-between gap-5">
-        <span className="flex size-10 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200 transition-transform duration-300 group-hover:scale-105">
-          <Icon className="size-5" aria-hidden="true" />
+        <span className="flex size-10 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200 transition-all duration-300 group-hover:scale-110 group-hover:border-cyan-300/50 group-hover:bg-cyan-300/20 group-hover:shadow-lg group-hover:shadow-cyan-500/30">
+          <Icon className="size-5 transition-transform duration-300 group-hover:rotate-12" aria-hidden="true" />
         </span>
         <span>
-          <span className="block text-lg font-bold text-white">{tab.title}</span>
-          <span className="mt-1 block text-sm leading-5 text-slate-400">{tab.description}</span>
+          <span className="block text-lg font-bold text-white transition-colors duration-300 group-hover:text-cyan-200">{tab.title}</span>
+          <span className="mt-1 block text-sm leading-5 text-slate-400 transition-colors duration-300 group-hover:text-slate-300">{tab.description}</span>
         </span>
       </span>
     </button>
