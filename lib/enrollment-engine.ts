@@ -45,7 +45,7 @@ export function getEngineStats(items: DocItem[]): EngineStats {
 export function getReadinessScores(items: DocItem[]): ReadinessScores {
   const scoreForCategory = (category: DocCategory) => {
     const categoryItems = items.filter((item) => getSpec(item.docKey).category === category)
-    if (!categoryItems.length) return category === "thumb" ? 100 : 0
+    if (!categoryItems.length) return 0
     const total = categoryItems.reduce((sum, item) => sum + scoreItem(item), 0)
     return Math.round(total / categoryItems.length)
   }
