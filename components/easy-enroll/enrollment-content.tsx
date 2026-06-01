@@ -4,7 +4,6 @@ import { FileStack } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { DocumentCard } from "./document-card"
 import { EnrollmentActions } from "./enrollment-actions"
-import { EnrollmentDashboard } from "./enrollment-dashboard"
 import { StudentForm } from "./student-form"
 import { SummaryPanel } from "./summary-panel"
 import { UploadZone } from "./upload-zone"
@@ -59,8 +58,6 @@ export function EnrollmentContent({
           <EnrollmentActions onReset={onReset} />
         </div>
       </div>
-
-      <EnrollmentDashboard items={items} />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
         <div className="space-y-6">

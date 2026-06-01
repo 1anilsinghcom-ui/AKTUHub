@@ -280,7 +280,7 @@ export function AKTUHubApp() {
   }
 
   return (
-    <div className="min-h-screen bg-app">
+    <div className="ui-polish min-h-screen bg-app">
       <Toaster position="top-center" richColors />
       <AppHeader />
 

@@ -51,9 +51,11 @@ export function UploadZone({ onFiles, onRejected, disabled }: Props) {
     <div
       {...getRootProps()}
       className={cn(
-        "group relative flex cursor-pointer flex-col items-center justify-center gap-3 overflow-hidden rounded-2xl border-2 border-dashed border-border bg-secondary/30 px-6 py-12 text-center transition-all duration-300",
-        "hover:border-primary/60 hover:bg-secondary/50",
-        isDragActive && "scale-[1.01] border-primary bg-accent shadow-xl shadow-primary/20",
+        "group relative flex min-h-[280px] cursor-pointer flex-col items-center justify-center gap-5 overflow-hidden rounded-2xl border-2 border-dashed px-8 py-16 text-center transition-all duration-300",
+        "border-cyan-400/50 bg-cyan-500/[0.08] shadow-lg shadow-cyan-500/15 ring-1 ring-cyan-400/25",
+        "hover:border-cyan-300/70 hover:bg-cyan-500/[0.12] hover:shadow-xl hover:shadow-cyan-500/25 hover:ring-cyan-300/40",
+        isDragActive &&
+          "scale-[1.01] border-cyan-300 bg-cyan-500/15 shadow-2xl shadow-cyan-500/30 ring-2 ring-cyan-300/50",
         disabled && "cursor-not-allowed opacity-60",
       )}
       role="button"
@@ -62,17 +64,17 @@ export function UploadZone({ onFiles, onRejected, disabled }: Props) {
       <input {...getInputProps()} />
       <div
         className={cn(
-          "flex size-14 items-center justify-center rounded-2xl bg-primary/15 text-primary transition-transform duration-300 group-hover:scale-110",
+          "flex size-20 items-center justify-center rounded-2xl bg-cyan-400/20 text-cyan-300 transition-transform duration-300 group-hover:scale-110",
           isDragActive && "animate-float",
         )}
       >
-        <UploadCloud className="size-7" aria-hidden="true" />
+        <UploadCloud className="size-10" aria-hidden="true" />
       </div>
       <div>
-        <p className="text-sm font-semibold text-foreground">
+        <p className="text-base font-bold text-white sm:text-lg">
           {isDragActive ? "Drop the files here" : "Drag & drop documents, or click to browse"}
         </p>
-        <p className="mt-1 text-xs text-muted-foreground">
+        <p className="mt-2 text-sm text-cyan-100/70">
           Photos, signatures &amp; certificates · JPG, PNG, WebP, HEIC, PDF · up to 10 MB each
         </p>
       </div>

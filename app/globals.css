@@ -169,7 +169,7 @@
   }
 }
 .animate-tab-enter {
-  animation: ah-tab-enter 0.3s ease both;
+  animation: ah-tab-enter 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes ah-enrollment-actions {
@@ -271,6 +271,147 @@
   animation: ee-progress 1.3s ease-in-out infinite;
 }
 
+/* Subtle ambient background drift */
+@keyframes ee-ambient-drift {
+  0%,
+  100% {
+    background-position:
+      0% 0%,
+      0% 0%,
+      100% 100%;
+  }
+  50% {
+    background-position:
+      0% 0%,
+      100% 50%,
+      0% 100%;
+  }
+}
+
+/* Gentle header entrance */
+@keyframes ee-slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Soft glow pulse for highlighted surfaces */
+@keyframes ee-soft-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 10px 28px -14px rgba(34, 211, 238, 0.22),
+      inset 0 0 0 1px rgba(34, 211, 238, 0.12);
+  }
+  50% {
+    box-shadow:
+      0 14px 36px -12px rgba(34, 211, 238, 0.34),
+      inset 0 0 0 1px rgba(34, 211, 238, 0.22);
+  }
+}
+
+/* Gentle icon bob */
+@keyframes ee-icon-bob {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+/* Staggered list / card entrance */
+@keyframes ee-scale-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Global UI polish — one class on app root; layout/behavior unchanged */
+.ui-polish.bg-app {
+  background-size:
+    100% 100%,
+    200% 200%,
+    200% 200%;
+  animation: ee-ambient-drift 18s ease-in-out infinite;
+}
+
+.ui-polish header {
+  animation: ee-slide-down 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ui-polish .animate-tab-enter > section.space-y-6 > * {
+  animation: ee-scale-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ui-polish .animate-tab-enter > section.space-y-6 > *:nth-child(1) {
+  animation-delay: 0.06s;
+}
+.ui-polish .animate-tab-enter > section.space-y-6 > *:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.ui-polish section.mx-auto.max-w-7xl .grid > button {
+  animation: ee-scale-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ui-polish section.mx-auto.max-w-7xl .grid > button:nth-child(1) {
+  animation-delay: 0.04s;
+}
+.ui-polish section.mx-auto.max-w-7xl .grid > button:nth-child(2) {
+  animation-delay: 0.08s;
+}
+.ui-polish section.mx-auto.max-w-7xl .grid > button:nth-child(3) {
+  animation-delay: 0.12s;
+}
+.ui-polish section.mx-auto.max-w-7xl .grid > button:nth-child(4) {
+  animation-delay: 0.16s;
+}
+.ui-polish section.mx-auto.max-w-7xl .grid > button:nth-child(5) {
+  animation-delay: 0.2s;
+}
+
+.ui-polish [aria-label="Upload documents"] {
+  animation:
+    ee-soft-glow 4.5s ease-in-out infinite,
+    ee-scale-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.ui-polish [aria-label="Upload documents"] svg {
+  animation: ee-icon-bob 3.2s ease-in-out infinite;
+}
+
+.ui-polish button,
+.ui-polish [role="button"] {
+  transition:
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease,
+    opacity 0.2s ease;
+}
+
+.ui-polish .rounded-2xl.border,
+.ui-polish .rounded-xl.border {
+  transition:
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.ui-polish footer {
+  animation: ee-fade-in 0.7s ease 0.15s both;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-up,
   .animate-fade-in,
@@ -279,7 +420,14 @@
   .animate-float,
   .animate-pop,
   .skeleton::after,
-  .progress-bar {
+  .progress-bar,
+  .ui-polish.bg-app,
+  .ui-polish header,
+  .ui-polish .animate-tab-enter > section.space-y-6 > *,
+  .ui-polish section.mx-auto.max-w-7xl .grid > button,
+  .ui-polish [aria-label="Upload documents"],
+  .ui-polish [aria-label="Upload documents"] svg,
+  .ui-polish footer {
     animation: none;
   }
   .lift:hover {
