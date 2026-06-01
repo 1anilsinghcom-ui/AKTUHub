@@ -29,6 +29,7 @@ import {
 } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { FileCompressor } from "@/components/FileCompressor"
+import { SGPAToCGPACalculator } from "./sgpa-to-cgpa-calculator"
 
 interface FeatureItem {
   title: string
@@ -105,24 +106,38 @@ export function FacultyContent() {
 
 export function UtilitiesContent() {
   const [compressorOpen, setCompressorOpen] = useState(false)
+  const [cgpaOpen, setCgpaOpen] = useState(false)
 
   return (
-    <Dialog open={compressorOpen} onOpenChange={setCompressorOpen}>
-      <FeatureSection
-        eyebrow="Academic utilities"
-        title="Utilities"
-        subtitle="Helpful tools for AKTU students and faculty."
-        items={utilityItems}
-        onCompressorOpen={() => setCompressorOpen(true)}
-      />
-      <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
-        <DialogHeader>
-          <DialogTitle>All-in-One File Compressor</DialogTitle>
-          <DialogDescription>Compress images, PDFs, and documents to your target file size</DialogDescription>
-        </DialogHeader>
-        <FileCompressor />
-      </DialogContent>
-    </Dialog>
+    <>
+      <Dialog open={compressorOpen} onOpenChange={setCompressorOpen}>
+        <FeatureSection
+          eyebrow="Academic utilities"
+          title="Utilities"
+          subtitle="Helpful tools for AKTU students and faculty."
+          items={utilityItems}
+          onCompressorOpen={() => setCompressorOpen(true)}
+          onCgpaOpen={() => setCgpaOpen(true)}
+        />
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>All-in-One File Compressor</DialogTitle>
+            <DialogDescription>Compress images, PDFs, and documents to your target file size</DialogDescription>
+          </DialogHeader>
+          <FileCompressor />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={cgpaOpen} onOpenChange={setCgpaOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle></DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
+          <SGPAToCGPACalculator />
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }
 
@@ -132,9 +147,10 @@ interface FeatureSectionProps {
   subtitle: string
   items: FeatureItem[]
   onCompressorOpen?: () => void
+  onCgpaOpen?: () => void
 }
 
-function FeatureSection({ eyebrow, title, subtitle, items, onCompressorOpen }: FeatureSectionProps) {
+function FeatureSection({ eyebrow, title, subtitle, items, onCompressorOpen, onCgpaOpen }: FeatureSectionProps) {
   return (
     <section className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 shadow-2xl shadow-blue-950/10 sm:p-7">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -155,7 +171,9 @@ function FeatureSection({ eyebrow, title, subtitle, items, onCompressorOpen }: F
             key={item.title}
             item={item}
             isCompressor={item.title === "All-in-One File Compressor"}
+            isCgpa={item.title === "CGPA Calculator"}
             onCompressorOpen={onCompressorOpen}
+            onCgpaOpen={onCgpaOpen}
           />
         ))}
       </div>
@@ -166,11 +184,15 @@ function FeatureSection({ eyebrow, title, subtitle, items, onCompressorOpen }: F
 function FeatureCard({
   item,
   isCompressor,
+  isCgpa,
   onCompressorOpen,
+  onCgpaOpen,
 }: {
   item: FeatureItem
   isCompressor?: boolean
+  isCgpa?: boolean
   onCompressorOpen?: () => void
+  onCgpaOpen?: () => void
 }) {
   const Icon = item.icon
 
@@ -213,6 +235,39 @@ function FeatureCard({
               {item.actionLabel}
             </button>
           </DialogTrigger>
+        ) : null}
+      </article>
+    )
+  }
+
+  if (isCgpa) {
+    return (
+      <article className="animate-fade-up group relative flex h-full flex-col overflow-hidden rounded-xl border border-white/10 bg-[#0e1729]/80 p-5 transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-500/30 hover:border-cyan-300/60 hover:bg-[#111d34] hover:scale-105 cursor-pointer" onClick={onCgpaOpen}>
+        <span className="absolute inset-x-5 top-0 h-px scale-x-0 rounded-full bg-gradient-to-r from-cyan-300 to-violet-400 transition-transform duration-300 group-hover:scale-x-100" />
+        <div className="flex items-start justify-between gap-4">
+          <div className="flex size-11 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200 transition-all duration-300 group-hover:scale-110 group-hover:border-cyan-300/50 group-hover:bg-cyan-300/20">
+            <Icon className="size-5 transition-transform duration-300 group-hover:rotate-12" aria-hidden="true" />
+          </div>
+          <span className="rounded-full border border-emerald-300/20 bg-emerald-400/10 px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide text-emerald-200">
+            Available Now
+          </span>
+        </div>
+        <h3 className="mt-5 text-lg font-bold text-white transition-colors duration-300 group-hover:text-cyan-200">
+          {item.title}
+        </h3>
+        <p className="mt-2 text-sm leading-6 text-slate-400 transition-colors duration-300 group-hover:text-slate-300">
+          {item.description ??
+            "A focused AKTUHub module designed for fast access, clean workflows, and reliable academic productivity."}
+        </p>
+        {item.features?.length ? (
+          <ul className="mt-4 space-y-2">
+            {item.features.map((feature) => (
+              <li key={feature} className="flex items-center gap-2 text-xs font-medium text-slate-300">
+                <span className="size-1.5 shrink-0 rounded-full bg-cyan-300" />
+                {feature}
+              </li>
+            ))}
+          </ul>
         ) : null}
       </article>
     )

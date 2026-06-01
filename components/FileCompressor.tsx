@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react"
 import { Download, RotateCcw, AlertCircle, CheckCircle2, Loader2 } from "lucide-react"
 import imageCompression from "browser-image-compression"
+import { compressPdf } from "../lib/pdf-utils"
 
 interface CompressionResult {
   success: boolean
@@ -91,42 +92,25 @@ export function FileCompressor() {
     setError("")
     setWarning("")
 
-    try {
-      const targetBytes = targetMB ? parseFloat(targetMB) * 1024 * 1024 : parseFloat(targetKB) * 1024
-      const targetMBValue = targetBytes / (1024 * 1024)
+      try {
+        const targetBytes = targetMB ? parseFloat(targetMB) * 1024 * 1024 : parseFloat(targetKB) * 1024
+        const targetKBValue = targetBytes / 1024
+        const targetMBValue = targetBytes / (1024 * 1024)
 
-      if (file.type === "application/pdf") {
-        // For PDFs, use the existing compress-pdf API
-        const formData = new FormData()
-        formData.append("file", file)
+        if (file.type === "application/pdf") {
+          // For PDFs, use client-side compression with pdf-lib
+          const { blob: compressedBlob } = await compressPdf(file, targetKBValue)
 
-        const response = await fetch("/api/compress-pdf", {
-          method: "POST",
-          body: formData,
-        })
-
-        const data = await response.json()
-
-        if (!data.success) {
-          setError("PDF compression failed")
-          setIsCompressing(false)
-          return
-        }
-
-        const compressedBlob = new Blob([Buffer.from(data.fileBase64, "base64")], {
-          type: "application/pdf",
-        })
-
-        setResult({
-          success: true,
-          originalSize,
-          compressedSize: compressedBlob.size,
-          blob: compressedBlob,
-        })
-      } else if (file.type.startsWith("image/")) {
-        // For images, use browser-image-compression
-        const compressed = await imageCompression(file, {
-          maxSizeMB: targetMBValue,
+          setResult({
+            success: true,
+            originalSize,
+            compressedSize: compressedBlob.size,
+            blob: compressedBlob,
+          })
+        } else if (file.type.startsWith("image/")) {
+          // For images, use browser-image-compression
+          const compressed = await imageCompression(file, {
+            maxSizeMB: targetMBValue,
           useWebWorker: true,
           fileType: file.type,
         })
