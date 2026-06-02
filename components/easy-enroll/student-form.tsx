@@ -13,8 +13,8 @@ interface Props {
 
 export function StudentForm({ student, onChange }: Props) {
   return (
-    <Card className="glass-panel overflow-hidden">
-      <CardHeader className="border-b border-white/10 bg-white/[0.01] pb-4">
+    <Card className="frost-card overflow-hidden">
+      <CardHeader className="border-b border-white/[0.06] bg-white/[0.01] pb-4">
         <div className="flex items-center justify-between gap-4">
           <CardTitle className="flex items-center gap-2 text-base text-white font-black">
             <UserRound className="size-4 text-purple-400" aria-hidden="true" />

@@ -45,10 +45,10 @@ export function SummaryPanel({
         : "Download"
 
   return (
-    <Card className="glass-panel overflow-hidden">
-      <CardHeader className="pb-3 border-b border-white/10 bg-white/[0.01]">
+    <Card className="frost-card overflow-hidden">
+      <CardHeader className="pb-3 border-b border-white/[0.06] bg-white/[0.01]">
         <CardTitle className="flex items-center gap-2 text-base text-white font-black">
-          <ListChecks className="size-4 text-purple-400" aria-hidden="true" />
+          <ListChecks className="size-4 text-purple-400 glow-sm" aria-hidden="true" />
           Enrollment Checklist
         </CardTitle>
       </CardHeader>

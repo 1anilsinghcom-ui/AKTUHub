@@ -285,51 +285,98 @@ export function AKTUHubApp() {
       <Toaster position="top-center" richColors />
       <AppHeader />
 
-      <section className="relative overflow-hidden border-b border-white/10 bg-[linear-gradient(135deg,#07111f_0%,#0b1530_48%,#11112c_100%)]">
-        <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(56,189,248,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(99,102,241,0.08)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:py-8">
-          <div className="animate-fade-up max-w-3xl">
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-blue-200 transition-all duration-300 hover:border-blue-300/50 hover:bg-blue-400/20 hover:shadow-lg hover:shadow-blue-500/20">
-              <Sparkles className="size-3.5 animate-spin transition-transform duration-300" aria-hidden="true" />
-              AKTU digital ecosystem
+      {/* ── HERO SECTION ── */}
+      <section className="relative overflow-hidden border-b border-white/[0.06]">
+        {/* Deep purple-navy gradient background */}
+        <div className="absolute inset-0 bg-[linear-gradient(135deg,#0a0418_0%,#0d0825_35%,#100a2e_60%,#0c0620_100%)]" />
+
+        {/* Animated gradient orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute -top-40 -left-20 w-[600px] h-[600px] rounded-full bg-purple-600/10 blur-[120px] animate-pulse" style={{ animationDuration: '8s' }} />
+          <div className="absolute -bottom-32 right-10 w-[500px] h-[500px] rounded-full bg-indigo-500/10 blur-[100px] animate-pulse" style={{ animationDuration: '12s', animationDelay: '2s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full bg-violet-500/6 blur-[90px] animate-pulse" style={{ animationDuration: '10s', animationDelay: '1s' }} />
+        </div>
+
+        {/* Fine grid overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(139,92,246,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(139,92,246,0.06)_1px,transparent_1px)] bg-[size:60px_60px] opacity-40" />
+
+        {/* Neon top border */}
+        <div className="neon-line absolute top-0 inset-x-0" />
+
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.15fr_0.85fr] lg:py-14">
+
+          {/* Left — text block */}
+          <div className="animate-fade-up max-w-3xl space-y-5">
+            {/* Badge */}
+            <div className="hero-badge inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.2em] text-purple-200">
+              <Sparkles className="sparkle-icon size-3.5 text-purple-300" aria-hidden="true" />
+              AKTU Digital Ecosystem
             </div>
-            <h1 className="mt-3 text-balance text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl transition-all duration-500 hover:text-transparent hover:bg-gradient-to-r hover:from-sky-300 hover:via-blue-400 hover:to-violet-400 hover:bg-clip-text">
-              AKTUHub
-              <span className="block bg-gradient-to-r from-sky-300 via-blue-400 to-violet-400 bg-clip-text text-transparent">
-                smart academic tools in one place.
-              </span>
-            </h1>
-            <p className="mt-3 max-w-2xl text-pretty text-sm leading-7 text-slate-300 sm:text-base transition-all duration-300 hover:text-slate-200">
-              Smart Solutions for AKTU Students & Faculty. Start with enrollment and
-              document processing today, then grow into notes, PYQs, dashboards,
-              calculators, geo-tag tools, placements, and AI-powered student services.
+
+            {/* Main title */}
+            <div>
+              <h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl lg:text-6xl">
+                <span className="hero-title-main">AKTUHub</span>
+              </h1>
+              <h2 className="mt-2 text-2xl font-black leading-tight tracking-tight sm:text-3xl lg:text-4xl">
+                <span className="hero-title-sub">Smart academic tools</span>
+                <span className="block text-white/80 font-medium text-xl sm:text-2xl lg:text-3xl mt-1">in one place.</span>
+              </h2>
+            </div>
+
+            {/* Description */}
+            <p className="max-w-xl text-base leading-7 text-slate-400 sm:text-lg sm:leading-8">
+              Smart solutions for{" "}
+              <span className="font-semibold text-purple-300">AKTU students</span> &{" "}
+              <span className="font-semibold text-indigo-300">faculty</span>. Enrollment,
+              document processing, notes, PYQs, calculators, geo-tag tools, and
+              AI-powered services — all in one dashboard.
             </p>
+
+            {/* Feature pills */}
+            <div className="flex flex-wrap gap-2 pt-1">
+              {["Enrollment Docs", "PDF Processing", "OCR Classification", "ZIP Export"].map((f, i) => (
+                <span
+                  key={f}
+                  className="animate-card-enter rounded-full border border-purple-500/20 bg-purple-500/8 px-3 py-1 text-xs font-semibold text-purple-200 backdrop-blur-sm transition-all duration-300 hover:border-purple-400/40 hover:bg-purple-500/15 hover:scale-105"
+                  style={{ animationDelay: `${0.3 + i * 0.07}s` }}
+                >
+                  {f}
+                </span>
+              ))}
+            </div>
           </div>
 
-          <div className="animate-fade-up lg:justify-self-end card-3d-wrap" style={{ animationDelay: "100ms" }}>
-            <div className="card-3d group relative mx-auto max-w-[280px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-3 shadow-[0_20px_50px_rgba(8,112,184,0.15)]">
-              <div className="absolute inset-0 bg-gradient-to-tr from-sky-400/10 via-transparent to-violet-500/10 opacity-60 pointer-events-none" />
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/80 to-transparent" />
+          {/* Right — 3D logo card */}
+          <div className="animate-fade-up lg:justify-self-end card-3d-wrap" style={{ animationDelay: "120ms" }}>
+            <div className="card-3d group relative mx-auto max-w-[290px] overflow-hidden rounded-3xl border border-white/10 bg-white/[0.025] p-4 shadow-[0_30px_80px_rgba(88,28,220,0.25)]">
+              {/* inner glow gradients */}
+              <div className="absolute inset-0 bg-gradient-to-tr from-purple-600/12 via-transparent to-indigo-500/10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-b from-white/[0.04] to-transparent pointer-events-none rounded-3xl" />
+              <div className="neon-line absolute inset-x-6 top-0" />
+
               <div className="card-3d-inner relative">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img
                   src="/aktuhub-logo.png"
                   alt="AKTUHub official logo"
-                  className="aspect-square w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105 shadow-inner"
+                  className="aspect-square w-full rounded-2xl object-cover transition-all duration-500 group-hover:scale-[1.04] group-hover:brightness-110 shadow-[0_8px_32px_rgba(0,0,0,0.5)]"
                 />
-                <div className="mt-3 grid grid-cols-3 gap-1.5 text-[10px] font-bold tracking-tight text-slate-300">
-                  <span className="flex cursor-pointer items-center justify-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1.5 transition-all duration-300 hover:border-blue-400/50 hover:bg-blue-500/15 hover:text-blue-200 hover:scale-105 backdrop-blur-md">
-                    <GraduationCap className="size-3 text-blue-300 transition-transform duration-300" aria-hidden="true" />
-                    Students
-                  </span>
-                  <span className="flex cursor-pointer items-center justify-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1.5 transition-all duration-300 hover:border-violet-400/50 hover:bg-violet-500/15 hover:text-violet-200 hover:scale-105 backdrop-blur-md">
-                    <BriefcaseBusiness className="size-3 text-violet-300 transition-transform duration-300" aria-hidden="true" />
-                    Faculty
-                  </span>
-                  <span className="flex cursor-pointer items-center justify-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1.5 transition-all duration-300 hover:border-cyan-400/50 hover:bg-cyan-500/15 hover:text-cyan-200 hover:scale-105 backdrop-blur-md">
-                    <MapPin className="size-3 text-cyan-300 transition-transform duration-300" aria-hidden="true" />
-                    Geo Tools
-                  </span>
+                <div className="mt-3.5 grid grid-cols-3 gap-2 text-[10px] font-bold tracking-tight text-slate-300">
+                  {([
+                    { icon: GraduationCap, label: "Students", color: "purple" },
+                    { icon: BriefcaseBusiness, label: "Faculty", color: "indigo" },
+                    { icon: MapPin, label: "Geo Tools", color: "violet" },
+                  ] as const).map(({ icon: Icon, label, color }) => (
+                    <span
+                      key={label}
+                      className={`flex cursor-pointer items-center justify-center gap-1 rounded-xl border border-white/8 bg-white/[0.04] px-1.5 py-2 transition-all duration-300 hover:scale-105 backdrop-blur-md
+                        hover:border-${color}-400/50 hover:bg-${color}-500/15 hover:text-${color}-200`}
+                    >
+                      <Icon className={`size-3 text-${color}-300`} aria-hidden="true" />
+                      {label}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>

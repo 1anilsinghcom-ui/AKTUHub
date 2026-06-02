@@ -11,7 +11,7 @@ export function EnrollmentDashboard({ items }: { items: DocItem[] }) {
 
   return (
     <section className="grid grid-cols-1 gap-4 xl:grid-cols-[1fr_360px]">
-      <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 shadow-2xl shadow-blue-950/10">
+      <div className="frost-card rounded-2xl p-5 shadow-2xl">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Enrollment Readiness Engine</p>
@@ -38,7 +38,7 @@ export function EnrollmentDashboard({ items }: { items: DocItem[] }) {
         <Metric icon={XCircle} label="Failed" value={stats.failedFiles} />
       </div>
 
-      <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 xl:col-span-2">
+      <div className="frost-card rounded-2xl p-5 xl:col-span-2">
         <div className="flex items-center gap-2 text-sm font-bold text-white">
           <Activity className="size-4 text-cyan-300" aria-hidden="true" />
           Processing Statistics

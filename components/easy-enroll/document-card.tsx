@@ -38,7 +38,7 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
     item.status === "ok" ? 100 : item.status === "flagged" ? Math.max(60, 92 - (item.result?.flags.length ?? 1) * 10) : item.status === "error" ? 0 : 45
 
   return (
-    <div className="lift animate-fade-up rounded-xl glass-panel p-3 sm:p-4">
+    <div className="lift animate-card-enter rounded-xl frost-card p-3 sm:p-4 transition-all duration-300">
       <div className="flex gap-3 sm:gap-4">
         {/* thumbnail */}
         <div className="relative size-16 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/[0.02] sm:size-20">
@@ -125,8 +125,8 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
                   <span
                     key={index}
                     className={cn(
-                      "h-1.5 rounded-full",
-                      index + 1 <= pipelineStep ? "bg-purple-400 shadow-[0_0_8px_#a855f7]" : "bg-white/10",
+                      "pipeline-step h-1.5 rounded-full transition-all duration-400",
+                      index + 1 <= pipelineStep ? "active" : "bg-white/8",
                     )}
                   />
                 ))}
