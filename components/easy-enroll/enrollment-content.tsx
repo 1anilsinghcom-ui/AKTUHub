@@ -7,6 +7,7 @@ import { EnrollmentActions } from "./enrollment-actions"
 import { StudentForm } from "./student-form"
 import { SummaryPanel } from "./summary-panel"
 import { UploadZone } from "./upload-zone"
+import { ScrollReveal } from "./scroll-reveal"
 import type { DocItem, StudentInfo } from "./types"
 
 interface EnrollmentContentProps {
@@ -46,21 +47,23 @@ export function EnrollmentContent({
 }: EnrollmentContentProps) {
   return (
     <section className="space-y-6">
-      <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 shadow-2xl shadow-blue-950/10 sm:p-6">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Enrollment Tool</p>
-            <h2 className="mt-2 text-3xl font-black tracking-tight text-white">Enrollment</h2>
-            <p className="mt-2 text-sm leading-6 text-slate-400">
-              Manage student enrollment documents
-            </p>
+      <ScrollReveal animation="fade-down" delay={50} duration={600}>
+        <div className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 shadow-2xl shadow-blue-950/10 sm:p-6">
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">Enrollment Tool</p>
+              <h2 className="mt-2 text-3xl font-black tracking-tight text-white">Enrollment</h2>
+              <p className="mt-2 text-sm leading-6 text-slate-400">
+                Manage student enrollment documents
+              </p>
+            </div>
+            <EnrollmentActions onReset={onReset} />
           </div>
-          <EnrollmentActions onReset={onReset} />
         </div>
-      </div>
+      </ScrollReveal>
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-[1fr_340px]">
-        <div className="space-y-6">
+        <ScrollReveal animation="fade-up" delay={150} duration={700} className="space-y-6">
           <StudentForm student={student} onChange={onStudentChange} />
 
           <Card className="border-white/10 bg-card/90 shadow-xl shadow-blue-950/10">
@@ -96,19 +99,21 @@ export function EnrollmentContent({
               )}
             </CardContent>
           </Card>
-        </div>
+        </ScrollReveal>
 
-        <aside className="lg:sticky lg:top-24 lg:self-start">
-          <SummaryPanel
-            items={items}
-            onDownload={onDownload}
-            downloading={downloading}
-            canDownload={canDownload}
-            downloadableCount={downloadableCount}
-            pendingCount={pendingCount}
-            criticalIssues={criticalIssues}
-          />
-        </aside>
+        <ScrollReveal animation="fade-left" delay={250} duration={700} className="lg:sticky lg:top-24 lg:self-start">
+          <aside>
+            <SummaryPanel
+              items={items}
+              onDownload={onDownload}
+              downloading={downloading}
+              canDownload={canDownload}
+              downloadableCount={downloadableCount}
+              pendingCount={pendingCount}
+              criticalIssues={criticalIssues}
+            />
+          </aside>
+        </ScrollReveal>
       </div>
     </section>
   )

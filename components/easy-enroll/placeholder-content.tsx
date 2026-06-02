@@ -3,33 +3,28 @@
 import { useState } from "react"
 import {
   BarChart3,
-  BookOpen,
   CalendarCheck,
   ClipboardCheck,
   FileArchive,
   FileBox,
   FileImage,
   FileText,
-  FolderOpen,
   GraduationCap,
   Image,
-  Library,
   LineChart,
   MapPin,
-  Megaphone,
-  NotebookTabs,
   PanelsTopLeft,
   Percent,
   Sigma,
   UserCog,
   Video,
   Wrench,
-  X,
   type LucideIcon,
 } from "lucide-react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { FileCompressor } from "@/components/FileCompressor"
 import { SGPAToCGPACalculator } from "./sgpa-to-cgpa-calculator"
+import { ScrollReveal } from "./scroll-reveal"
 
 interface FeatureItem {
   title: string
@@ -38,15 +33,6 @@ interface FeatureItem {
   features?: string[]
   actionLabel?: string
 }
-
-const studyItems: FeatureItem[] = [
-  { title: "Notes", icon: NotebookTabs },
-  { title: "Previous Year Questions (PYQ)", icon: Library },
-  { title: "Study Materials", icon: BookOpen },
-  { title: "Semester Resources", icon: FolderOpen },
-  { title: "Important Notices", icon: Megaphone },
-  { title: "Syllabus", icon: FileText },
-]
 
 const facultyItems: FeatureItem[] = [
   { title: "Attendance Tools", icon: CalendarCheck },
@@ -81,17 +67,6 @@ const utilityItems: FeatureItem[] = [
   { title: "File Converter", icon: FileArchive },
   { title: "Other Utilities", icon: Wrench },
 ]
-
-export function StudyHubContent() {
-  return (
-    <FeatureSection
-      eyebrow="Learning workspace"
-      title="Study Hub"
-      subtitle="Learning resources for AKTU students."
-      items={studyItems}
-    />
-  )
-}
 
 export function FacultyContent() {
   return (
@@ -152,32 +127,34 @@ interface FeatureSectionProps {
 
 function FeatureSection({ eyebrow, title, subtitle, items, onCompressorOpen, onCgpaOpen }: FeatureSectionProps) {
   return (
-    <section className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 shadow-2xl shadow-blue-950/10 sm:p-7">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
-          <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">{eyebrow}</p>
-          <h2 className="mt-2 text-3xl font-black tracking-tight text-white">{title}</h2>
-          <p className="mt-2 text-sm leading-6 text-slate-400 sm:text-base">{subtitle}</p>
+    <ScrollReveal animation="fade-up" delay={50} duration={600}>
+      <section className="rounded-2xl border border-white/10 bg-white/[0.025] p-5 shadow-2xl shadow-blue-950/10 sm:p-7">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-cyan-300">{eyebrow}</p>
+            <h2 className="mt-2 text-3xl font-black tracking-tight text-white">{title}</h2>
+            <p className="mt-2 text-sm leading-6 text-slate-400 sm:text-base">{subtitle}</p>
+          </div>
+          <div className="inline-flex w-fit items-center gap-2 rounded-full border border-violet-300/20 bg-violet-400/10 px-3 py-1.5 text-xs font-bold text-violet-200">
+            <PanelsTopLeft className="size-3.5" aria-hidden="true" />
+            Roadmap module
+          </div>
         </div>
-        <div className="inline-flex w-fit items-center gap-2 rounded-full border border-violet-300/20 bg-violet-400/10 px-3 py-1.5 text-xs font-bold text-violet-200">
-          <PanelsTopLeft className="size-3.5" aria-hidden="true" />
-          Roadmap module
-        </div>
-      </div>
 
-      <div className="mt-6 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        {items.map((item) => (
-          <FeatureCard
-            key={item.title}
-            item={item}
-            isCompressor={item.title === "All-in-One File Compressor"}
-            isCgpa={item.title === "CGPA Calculator"}
-            onCompressorOpen={onCompressorOpen}
-            onCgpaOpen={onCgpaOpen}
-          />
-        ))}
-      </div>
-    </section>
+        <div className="mt-6 grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 xl:grid-cols-3">
+          {items.map((item) => (
+            <FeatureCard
+              key={item.title}
+              item={item}
+              isCompressor={item.title === "All-in-One File Compressor"}
+              isCgpa={item.title === "CGPA Calculator"}
+              onCompressorOpen={onCompressorOpen}
+              onCgpaOpen={onCgpaOpen}
+            />
+          ))}
+        </div>
+      </section>
+    </ScrollReveal>
   )
 }
 

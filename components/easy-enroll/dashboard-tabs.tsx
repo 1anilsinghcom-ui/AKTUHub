@@ -82,7 +82,7 @@ interface TabCardProps {
 
 export function TabCard({ tab, active, onClick }: TabCardProps) {
   const Icon = tab.icon
-
+ 
   return (
     <button
       type="button"
@@ -90,26 +90,31 @@ export function TabCard({ tab, active, onClick }: TabCardProps) {
       aria-pressed={active}
       className={cn(
         "group relative min-h-32 overflow-hidden rounded-xl border p-5 text-left transition-all duration-300",
-        "bg-white/[0.035] shadow-sm shadow-blue-950/20 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-500/30 hover:border-cyan-300/60 hover:bg-white/[0.08]",
-        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300/70",
+        "bg-white/[0.015] backdrop-blur-md shadow-sm shadow-black/40 hover:-translate-y-1 hover:shadow-xl hover:shadow-purple-950/20 hover:border-purple-500/40 hover:bg-white/[0.035]",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-purple-400/70",
         active
-          ? "scale-[1.03] border-cyan-300/80 bg-cyan-400/15 shadow-[0_0_34px_rgba(56,189,248,0.3)]"
-          : "border-white/10 hover:scale-105",
+          ? "scale-[1.03] border-purple-400/80 bg-purple-500/[0.07] shadow-[0_0_34px_rgba(168,85,247,0.25)]"
+          : "border-white/10 hover:scale-102",
       )}
     >
       <span
         className={cn(
-          "absolute inset-x-5 top-0 h-0.5 origin-left rounded-full bg-gradient-to-r from-cyan-300 via-blue-400 to-violet-400 transition-transform duration-300",
+          "absolute inset-x-5 top-0 h-0.5 origin-left rounded-full bg-gradient-to-r from-fuchsia-400 via-purple-500 to-indigo-500 transition-transform duration-300",
           active ? "scale-x-100" : "scale-x-0 group-hover:scale-x-75",
         )}
       />
-      <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(56,189,248,0.10),transparent_42%,rgba(139,92,246,0.08))] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+      <span className="absolute inset-0 bg-[linear-gradient(135deg,rgba(168,85,247,0.08),transparent_42%,rgba(99,102,241,0.06))] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
       <span className="relative flex h-full flex-col justify-between gap-5">
-        <span className="flex size-10 items-center justify-center rounded-lg border border-cyan-300/20 bg-cyan-300/10 text-cyan-200 transition-all duration-300 group-hover:scale-110 group-hover:border-cyan-300/50 group-hover:bg-cyan-300/20 group-hover:shadow-lg group-hover:shadow-cyan-500/30">
+        <span className={cn(
+          "flex size-10 items-center justify-center rounded-lg border text-purple-200 transition-all duration-300",
+          active 
+            ? "border-purple-400/40 bg-purple-400/20 shadow-lg shadow-purple-500/30"
+            : "border-purple-400/20 bg-purple-400/10 group-hover:scale-110 group-hover:border-purple-400/50 group-hover:bg-purple-400/20 group-hover:shadow-lg group-hover:shadow-purple-500/30"
+        )}>
           <Icon className="size-5 transition-transform duration-300 group-hover:rotate-12" aria-hidden="true" />
         </span>
         <span>
-          <span className="block text-lg font-bold text-white transition-colors duration-300 group-hover:text-cyan-200">{tab.title}</span>
+          <span className="block text-lg font-bold text-white transition-colors duration-300 group-hover:text-purple-200">{tab.title}</span>
           <span className="mt-1 block text-sm leading-5 text-slate-400 transition-colors duration-300 group-hover:text-slate-300">{tab.description}</span>
         </span>
       </span>

@@ -5,43 +5,43 @@
 
 :root,
 .dark {
-  --background: #060b16;
+  --background: #05020c;
   --foreground: #f8fafc;
-  --card: #0f1728;
+  --card: rgba(13, 7, 26, 0.4);
   --card-foreground: #f8fafc;
-  --popover: #0b1220;
+  --popover: #080414;
   --popover-foreground: #f8fafc;
-  --primary: #38bdf8;
-  --primary-foreground: #02111f;
-  --secondary: #0b1220;
+  --primary: #a855f7;
+  --primary-foreground: #ffffff;
+  --secondary: rgba(255, 255, 255, 0.02);
   --secondary-foreground: #f8fafc;
-  --muted: #101827;
-  --muted-foreground: #9aa8bd;
-  --accent: #172554;
-  --accent-foreground: #dbeafe;
+  --muted: rgba(255, 255, 255, 0.01);
+  --muted-foreground: #94a3b8;
+  --accent: #6366f1;
+  --accent-foreground: #f8fafc;
   --destructive: #ef4444;
   --destructive-foreground: #fef2f2;
-  --success: #22c55e;
-  --success-foreground: #052e16;
+  --success: #10b981;
+  --success-foreground: #022c22;
   --warning: #f59e0b;
   --warning-foreground: #2a1a02;
-  --border: #1f2a44;
-  --input: #22304a;
-  --ring: #38bdf8;
-  --chart-1: #38bdf8;
-  --chart-2: #22c55e;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.04);
+  --ring: #a855f7;
+  --chart-1: #a855f7;
+  --chart-2: #10b981;
   --chart-3: #f59e0b;
   --chart-4: #ef4444;
-  --chart-5: #8b5cf6;
-  --radius: 0.625rem;
-  --sidebar: #0b1220;
+  --chart-5: #6366f1;
+  --radius: 0.75rem;
+  --sidebar: #080414;
   --sidebar-foreground: #f8fafc;
-  --sidebar-primary: #38bdf8;
-  --sidebar-primary-foreground: #02111f;
-  --sidebar-accent: #172554;
-  --sidebar-accent-foreground: #bfd3ff;
-  --sidebar-border: #1f2a44;
-  --sidebar-ring: #38bdf8;
+  --sidebar-primary: #a855f7;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: rgba(168, 85, 247, 0.15);
+  --sidebar-accent-foreground: #e9d5ff;
+  --sidebar-border: rgba(255, 255, 255, 0.08);
+  --sidebar-ring: #a855f7;
 }
 
 @theme inline {
@@ -101,21 +101,26 @@
   }
 }
 
-/* Premium dark background: deep navy base with restrained brand depth */
+/* Premium dark background: cosmic nebular gradients shifting dynamically */
 .bg-app {
-  background-color: var(--background);
+  background-color: #05020c;
   background-image:
-    linear-gradient(180deg, rgba(15, 23, 42, 0.72), rgba(6, 11, 22, 0.98) 42%),
-    linear-gradient(135deg, rgba(14, 165, 233, 0.09), transparent 38%),
-    linear-gradient(225deg, rgba(139, 92, 246, 0.08), transparent 42%);
+    linear-gradient(180deg, rgba(13, 7, 26, 0.8) 0%, rgba(6, 10, 23, 0.98) 50%, #030206 100%),
+    radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.12) 0%, transparent 45%),
+    radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.08) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(99, 102, 241, 0.06) 0%, transparent 60%);
   background-attachment: fixed;
 }
 
-/* Glass surface helper */
+/* Glass surface helper - sleek transparent mirror plate */
 .glass {
-  background: rgba(6, 11, 22, 0.78);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255, 255, 255, 0.02) !important;
+  backdrop-filter: blur(24px) !important;
+  -webkit-backdrop-filter: blur(24px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.45),
+    inset 0 0 12px 1px rgba(255, 255, 255, 0.01) !important;
 }
 
 /* Hover lift + scale for interactive cards */
@@ -410,6 +415,112 @@
 
 .ui-polish footer {
   animation: ee-fade-in 0.7s ease 0.15s both;
+}
+
+/* 3D Glassmorphism tilt styles */
+.card-3d-wrap {
+  perspective: 1200px;
+}
+.card-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.5s ease, border-color 0.5s ease;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+.card-3d:hover {
+  transform: rotateX(10deg) rotateY(-10deg) translateZ(12px);
+  box-shadow: 
+    -15px 25px 50px -15px rgba(0, 0, 0, 0.8),
+    0 0 30px 10px rgba(56, 189, 248, 0.2),
+    inset 0 0 20px 2px rgba(255, 255, 255, 0.05);
+  border-color: rgba(56, 189, 248, 0.35);
+}
+.card-3d-inner {
+  transform: translateZ(40px);
+  transform-style: preserve-3d;
+}
+
+/* Glassmorphic elements */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.015) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  box-shadow: 
+    0 12px 40px 0 rgba(0, 0, 0, 0.45),
+    inset 0 0 12px 1px rgba(255, 255, 255, 0.01) !important;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+}
+.glass-panel:hover {
+  border-color: rgba(168, 85, 247, 0.25) !important;
+  background: rgba(255, 255, 255, 0.025) !important;
+  box-shadow: 
+    0 16px 48px 0 rgba(0, 0, 0, 0.55),
+    0 0 20px 2px rgba(168, 85, 247, 0.08),
+    inset 0 0 12px 1px rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Glass Input Control with focus ring and light neon shadow */
+.glass-input {
+  background: rgba(255, 255, 255, 0.01) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #ffffff !important;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease !important;
+}
+.glass-input::placeholder {
+  color: rgba(154, 168, 189, 0.4) !important;
+}
+.glass-input:focus {
+  border-color: rgba(168, 85, 247, 0.5) !important;
+  box-shadow: 
+    0 0 15px rgba(168, 85, 247, 0.2),
+    inset 0 0 6px rgba(168, 85, 247, 0.05) !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+}
+
+/* Premium Violet/Pink Glowing Button */
+.btn-glossy {
+  background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  box-shadow: 
+    0 4px 20px -2px rgba(139, 92, 246, 0.4),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.3) !important;
+  color: #ffffff !important;
+  transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+.btn-glossy:hover {
+  transform: translateY(-1px);
+  box-shadow: 
+    0 8px 25px -1px rgba(139, 92, 246, 0.6),
+    0 0 15px rgba(217, 70, 239, 0.3),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.4) !important;
+  filter: brightness(1.08);
+}
+.btn-glossy:active {
+  transform: translateY(1px);
+}
+
+/* Glow effects */
+.glow-text {
+  text-shadow: 0 0 20px rgba(168, 85, 247, 0.4);
+}
+.glow-border {
+  position: relative;
+}
+.glow-border::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, var(--primary), #6366f1);
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0.15;
+  transition: opacity 0.3s ease;
+}
+.glow-border:hover::after {
+  opacity: 0.4;
 }
 
 @media (prefers-reduced-motion: reduce) {

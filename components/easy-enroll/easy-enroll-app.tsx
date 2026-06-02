@@ -15,7 +15,8 @@ import { AboutContent } from "./about-content"
 import { AppHeader } from "./app-header"
 import { DashboardTabs, type DashboardTab } from "./dashboard-tabs"
 import { EnrollmentContent } from "./enrollment-content"
-import { FacultyContent, StudyHubContent, UtilitiesContent } from "./placeholder-content"
+import { FacultyContent, UtilitiesContent } from "./placeholder-content"
+import { StudyHubContent } from "./study-hub-content"
 import { Footer } from "./footer"
 import { EMPTY_STUDENT, type DocItem, type StudentInfo } from "./types"
 import {
@@ -286,47 +287,50 @@ export function AKTUHubApp() {
 
       <section className="relative overflow-hidden border-b border-white/10 bg-[linear-gradient(135deg,#07111f_0%,#0b1530_48%,#11112c_100%)]">
         <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(56,189,248,0.08)_1px,transparent_1px),linear-gradient(180deg,rgba(99,102,241,0.08)_1px,transparent_1px)] bg-[size:72px_72px] opacity-35" />
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:py-14">
+        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[1.1fr_0.9fr] lg:py-8">
           <div className="animate-fade-up max-w-3xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-blue-300/20 bg-blue-400/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-blue-200 transition-all duration-300 hover:border-blue-300/50 hover:bg-blue-400/20 hover:shadow-lg hover:shadow-blue-500/20">
               <Sparkles className="size-3.5 animate-spin transition-transform duration-300" aria-hidden="true" />
               AKTU digital ecosystem
             </div>
-            <h1 className="mt-5 text-balance text-4xl font-black leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl transition-all duration-500 hover:text-transparent hover:bg-gradient-to-r hover:from-sky-300 hover:via-blue-400 hover:to-violet-400 hover:bg-clip-text">
+            <h1 className="mt-3 text-balance text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl transition-all duration-500 hover:text-transparent hover:bg-gradient-to-r hover:from-sky-300 hover:via-blue-400 hover:to-violet-400 hover:bg-clip-text">
               AKTUHub
               <span className="block bg-gradient-to-r from-sky-300 via-blue-400 to-violet-400 bg-clip-text text-transparent">
                 smart academic tools in one place.
               </span>
             </h1>
-            <p className="mt-5 max-w-2xl text-pretty text-base leading-8 text-slate-300 sm:text-lg transition-all duration-300 hover:text-slate-200">
+            <p className="mt-3 max-w-2xl text-pretty text-sm leading-7 text-slate-300 sm:text-base transition-all duration-300 hover:text-slate-200">
               Smart Solutions for AKTU Students & Faculty. Start with enrollment and
               document processing today, then grow into notes, PYQs, dashboards,
               calculators, geo-tag tools, placements, and AI-powered student services.
             </p>
           </div>
 
-          <div className="animate-fade-up lg:justify-self-end" style={{ animationDelay: "100ms" }}>
-            <div className="group relative mx-auto max-w-md overflow-hidden rounded-2xl border border-white/10 bg-[#030814] p-4 shadow-2xl shadow-blue-950/40 transition-all duration-500 hover:shadow-2xl hover:shadow-blue-500/30 hover:border-blue-400/30">
-              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/70 to-transparent" />
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/aktuhub-logo.png"
-                alt="AKTUHub official logo"
-                className="aspect-square w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="mt-4 grid grid-cols-3 gap-2 text-xs font-semibold text-slate-300">
-                <span className="flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2 transition-all duration-300 hover:border-blue-400/50 hover:bg-blue-500/10 hover:text-blue-200 hover:scale-105">
-                  <GraduationCap className="size-3.5 text-blue-300 transition-transform duration-300" aria-hidden="true" />
-                  Students
-                </span>
-                <span className="flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2 transition-all duration-300 hover:border-violet-400/50 hover:bg-violet-500/10 hover:text-violet-200 hover:scale-105">
-                  <BriefcaseBusiness className="size-3.5 text-violet-300 transition-transform duration-300" aria-hidden="true" />
-                  Faculty
-                </span>
-                <span className="flex cursor-pointer items-center gap-1.5 rounded-md border border-white/10 bg-white/[0.04] px-2.5 py-2 transition-all duration-300 hover:border-cyan-400/50 hover:bg-cyan-500/10 hover:text-cyan-200 hover:scale-105">
-                  <MapPin className="size-3.5 text-cyan-300 transition-transform duration-300" aria-hidden="true" />
-                  Geo Tools
-                </span>
+          <div className="animate-fade-up lg:justify-self-end card-3d-wrap" style={{ animationDelay: "100ms" }}>
+            <div className="card-3d group relative mx-auto max-w-[280px] overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-3 shadow-[0_20px_50px_rgba(8,112,184,0.15)]">
+              <div className="absolute inset-0 bg-gradient-to-tr from-sky-400/10 via-transparent to-violet-500/10 opacity-60 pointer-events-none" />
+              <div className="absolute inset-x-8 top-0 h-px bg-gradient-to-r from-transparent via-sky-300/80 to-transparent" />
+              <div className="card-3d-inner relative">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/aktuhub-logo.png"
+                  alt="AKTUHub official logo"
+                  className="aspect-square w-full rounded-xl object-cover transition-transform duration-500 group-hover:scale-105 shadow-inner"
+                />
+                <div className="mt-3 grid grid-cols-3 gap-1.5 text-[10px] font-bold tracking-tight text-slate-300">
+                  <span className="flex cursor-pointer items-center justify-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1.5 transition-all duration-300 hover:border-blue-400/50 hover:bg-blue-500/15 hover:text-blue-200 hover:scale-105 backdrop-blur-md">
+                    <GraduationCap className="size-3 text-blue-300 transition-transform duration-300" aria-hidden="true" />
+                    Students
+                  </span>
+                  <span className="flex cursor-pointer items-center justify-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1.5 transition-all duration-300 hover:border-violet-400/50 hover:bg-violet-500/15 hover:text-violet-200 hover:scale-105 backdrop-blur-md">
+                    <BriefcaseBusiness className="size-3 text-violet-300 transition-transform duration-300" aria-hidden="true" />
+                    Faculty
+                  </span>
+                  <span className="flex cursor-pointer items-center justify-center gap-1 rounded-md border border-white/10 bg-white/[0.04] px-1.5 py-1.5 transition-all duration-300 hover:border-cyan-400/50 hover:bg-cyan-500/15 hover:text-cyan-200 hover:scale-105 backdrop-blur-md">
+                    <MapPin className="size-3 text-cyan-300 transition-transform duration-300" aria-hidden="true" />
+                    Geo Tools
+                  </span>
+                </div>
               </div>
             </div>
           </div>

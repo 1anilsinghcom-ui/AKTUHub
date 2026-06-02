@@ -14,16 +14,16 @@ export function AppHeader() {
             />
           </div>
           <div className="leading-tight">
-            <p className="text-lg font-black tracking-tight text-foreground">
-              AKTU<span className="bg-gradient-to-r from-blue-300 via-sky-400 to-violet-400 bg-clip-text text-transparent">Hub</span>
+            <p className="text-lg font-black tracking-tight text-white">
+              AKTU<span className="bg-gradient-to-r from-fuchsia-300 via-purple-400 to-indigo-400 bg-clip-text text-transparent">Hub</span>
             </p>
-            <p className="text-xs font-medium text-muted-foreground">
+            <p className="text-xs font-medium text-slate-400">
               Smart Solutions for AKTU Students & Faculty
             </p>
           </div>
         </div>
 
-        <div className="hidden rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 text-xs font-semibold text-slate-400 sm:block">
+        <div className="hidden rounded-full border border-purple-500/20 bg-purple-500/10 px-3 py-1.5 text-xs font-bold text-purple-200 shadow-[0_0_10px_rgba(168,85,247,0.1)] sm:block">
           Dashboard
         </div>
       </div>

@@ -38,10 +38,10 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
     item.status === "ok" ? 100 : item.status === "flagged" ? Math.max(60, 92 - (item.result?.flags.length ?? 1) * 10) : item.status === "error" ? 0 : 45
 
   return (
-    <div className="lift animate-fade-up rounded-xl border border-border bg-card p-3 sm:p-4">
+    <div className="lift animate-fade-up rounded-xl glass-panel p-3 sm:p-4">
       <div className="flex gap-3 sm:gap-4">
         {/* thumbnail */}
-        <div className="relative size-16 shrink-0 overflow-hidden rounded-lg border border-border bg-secondary sm:size-20">
+        <div className="relative size-16 shrink-0 overflow-hidden rounded-lg border border-white/10 bg-white/[0.02] sm:size-20">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={previewSrc || "/placeholder.svg"}
@@ -50,13 +50,13 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
           />
           {isBusy ? <div className="skeleton absolute inset-0" aria-hidden="true" /> : null}
         </div>
-
+ 
         {/* main */}
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-start justify-between gap-2">
             <div className="min-w-0">
               <Select value={item.docKey} onValueChange={(v) => onChangeType(item.id, v)}>
-                <SelectTrigger className="h-8 w-[190px] max-w-full text-sm">
+                <SelectTrigger className="h-8 w-[190px] max-w-full text-sm glass-input">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
@@ -67,50 +67,50 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
                   ))}
                 </SelectContent>
               </Select>
-              <p className="mt-1 truncate text-xs text-muted-foreground" title={item.file.name}>
+              <p className="mt-1 truncate text-xs text-slate-400" title={item.file.name}>
                 {item.file.name}
               </p>
-              <p className="mt-1 text-xs text-cyan-200/90">
+              <p className="mt-1 text-xs text-purple-300">
                 Auto-detected {item.detectionConfidence ?? 0}% confidence
               </p>
             </div>
-
+ 
             <StatusBadge item={item} />
           </div>
-
+ 
           {/* size comparison */}
           <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
-            <span className="text-muted-foreground">{formatBytes(item.originalSize)}</span>
+            <span className="text-slate-400">{formatBytes(item.originalSize)}</span>
             {item.result ? (
               <>
-                <ArrowRight className="size-3 text-muted-foreground" aria-hidden="true" />
+                <ArrowRight className="size-3 text-slate-400" aria-hidden="true" />
                 <span
                   className={cn(
                     "font-semibold",
-                    item.status === "ok" ? "text-success" : "text-foreground",
+                    item.status === "ok" ? "text-emerald-400" : "text-white",
                   )}
                 >
                   {formatBytes(item.result.size)}
                 </span>
-                <Badge variant="secondary" className="ml-1 font-normal">
+                <Badge className="ml-1 font-bold border-purple-500/20 bg-purple-500/10 text-purple-200 shadow-[0_0_10px_rgba(168,85,247,0.1)]">
                   {targetLabel}
                 </Badge>
                 {item.originalSize > item.result.size ? (
-                  <span className="text-muted-foreground">
+                  <span className="text-emerald-400">
                     −{Math.round((1 - item.result.size / item.originalSize) * 100)}%
                   </span>
                 ) : null}
               </>
             ) : (
-              <Badge variant="secondary" className="font-normal">
+              <Badge className="font-bold border-purple-500/20 bg-purple-500/10 text-purple-200 shadow-[0_0_10px_rgba(168,85,247,0.1)]">
                 target {targetLabel}
               </Badge>
             )}
           </div>
-
-          <div className="mt-3 grid gap-2 rounded-lg border border-white/10 bg-white/[0.025] p-3 sm:grid-cols-[130px_1fr]">
+ 
+          <div className="mt-3 grid gap-2 rounded-lg border border-white/10 bg-white/[0.015] p-3 sm:grid-cols-[130px_1fr]">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-wide text-slate-500">Readiness</p>
+              <p className="text-[11px] font-bold uppercase tracking-wide text-slate-400">Readiness</p>
               <p className="mt-1 text-lg font-black text-white">{qualityScore}%</p>
             </div>
             <div>
@@ -126,36 +126,36 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
                     key={index}
                     className={cn(
                       "h-1.5 rounded-full",
-                      index + 1 <= pipelineStep ? "bg-cyan-300" : "bg-white/10",
+                      index + 1 <= pipelineStep ? "bg-purple-400 shadow-[0_0_8px_#a855f7]" : "bg-white/10",
                     )}
                   />
                 ))}
               </div>
             </div>
           </div>
-
+ 
           {item.detectionReason ? (
-            <p className="mt-2 rounded-md border border-cyan-300/15 bg-cyan-300/5 px-2.5 py-2 text-xs text-slate-300">
+            <p className="mt-2 rounded-md border border-purple-500/20 bg-purple-500/5 px-2.5 py-2 text-xs text-slate-300">
               {item.detectionReason}
             </p>
           ) : null}
-
+ 
           {/* processing progress */}
           {isBusy ? (
             <div className="mt-2 flex items-center gap-2">
               <div className="progress-track h-1.5 flex-1">
                 <span className="progress-bar" />
               </div>
-              <span className="text-xs text-muted-foreground">Processing…</span>
+              <span className="text-xs text-slate-400">Processing…</span>
             </div>
           ) : null}
-
+ 
           {/* flags */}
           {item.result?.flags?.length ? (
             <ul className="mt-2 space-y-1">
               {item.result.flags.map((f, i) => (
-                <li key={i} className="flex items-start gap-1.5 text-xs text-warning-foreground">
-                  <AlertTriangle className="mt-0.5 size-3 shrink-0 text-warning" aria-hidden="true" />
+                <li key={i} className="flex items-start gap-1.5 text-xs text-amber-200/90">
+                  <AlertTriangle className="mt-0.5 size-3 shrink-0 text-amber-400" aria-hidden="true" />
                   <span>{f}</span>
                 </li>
               ))}
@@ -172,16 +172,16 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
             </ul>
           ) : null}
           {item.error ? (
-            <p className="mt-2 flex items-start gap-1.5 text-xs text-destructive">
-              <XCircle className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
+            <p className="mt-2 flex items-start gap-1.5 text-xs text-rose-300">
+              <XCircle className="mt-0.5 size-3 shrink-0 text-rose-400" aria-hidden="true" />
               {item.error}
             </p>
           ) : null}
-
+ 
           {item.status !== "queued" ? (
-            <div className="mt-3 rounded-lg border border-white/10 bg-[#081120]/80 p-3 text-xs leading-5 text-slate-300">
+            <div className="mt-3 rounded-lg border border-white/10 bg-white/[0.015] backdrop-blur-md p-3 text-xs leading-5 text-slate-300">
               <p className="flex items-center gap-1.5 font-bold text-slate-100">
-                <ShieldCheck className="size-3.5 text-cyan-300" aria-hidden="true" />
+                <ShieldCheck className="size-3.5 text-purple-400" aria-hidden="true" />
                 Engine explanation
               </p>
               <p className="mt-2"><span className="font-semibold text-slate-400">What:</span> {explanation.problem}</p>
@@ -190,17 +190,17 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
               <p><span className="font-semibold text-slate-400">Action:</span> {explanation.action}</p>
             </div>
           ) : null}
-
+ 
           {/* output filename */}
           {item.result && item.status !== "error" ? (
             <div className="mt-2 flex flex-wrap items-center gap-2">
-              <p className="truncate font-mono text-xs text-primary">
+              <p className="truncate font-mono text-xs text-purple-300 font-bold">
                 {rollNumber.trim() || "processed"}_{spec.key.toUpperCase()}.{item.result.ext}
               </p>
               <Button
                 variant="outline"
                 size="sm"
-                className="h-7 gap-1 text-xs"
+                className="h-7 gap-1 text-xs btn-glossy"
                 onClick={() => onDownload(item.id)}
               >
                 <Download className="size-3" aria-hidden="true" />
@@ -209,12 +209,12 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
             </div>
           ) : null}
         </div>
-
+ 
         {/* remove */}
         <Button
           variant="ghost"
           size="icon"
-          className="size-8 shrink-0 text-muted-foreground hover:text-destructive"
+          className="size-8 shrink-0 text-slate-400 hover:text-rose-400 hover:bg-rose-500/10"
           onClick={() => onRemove(item.id)}
           aria-label="Remove document"
         >
@@ -224,35 +224,35 @@ export function DocumentCard({ item, rollNumber, onChangeType, onRemove, onDownl
     </div>
   )
 }
-
+ 
 function StatusBadge({ item }: { item: DocItem }) {
   if (item.status === "processing" || item.status === "queued") {
     return (
-      <Badge variant="secondary" className="gap-1">
-        <Loader2 className="size-3 animate-spin" aria-hidden="true" />
+      <Badge variant="secondary" className="gap-1 border-purple-500/20 bg-purple-500/10 text-purple-200">
+        <Loader2 className="size-3 animate-spin text-purple-400" aria-hidden="true" />
         Processing
       </Badge>
     )
   }
   if (item.status === "ok") {
     return (
-      <Badge className="gap-1 bg-success text-success-foreground hover:bg-success">
-        <CheckCircle2 className="size-3 animate-pop" aria-hidden="true" />
+      <Badge className="gap-1 bg-emerald-500/20 text-emerald-200 border border-emerald-500/30 hover:bg-emerald-500/30">
+        <CheckCircle2 className="size-3 animate-pop text-emerald-400" aria-hidden="true" />
         Ready
       </Badge>
     )
   }
   if (item.status === "flagged") {
     return (
-      <Badge className="gap-1 bg-warning text-warning-foreground hover:bg-warning">
-        <AlertTriangle className="size-3" aria-hidden="true" />
+      <Badge className="gap-1 bg-amber-500/20 text-amber-200 border border-amber-500/30 hover:bg-amber-500/30">
+        <AlertTriangle className="size-3 text-amber-400" aria-hidden="true" />
         Check
       </Badge>
     )
   }
   return (
-    <Badge variant="destructive" className="gap-1">
-      <XCircle className="size-3" aria-hidden="true" />
+    <Badge variant="destructive" className="gap-1 bg-rose-500/20 text-rose-200 border border-rose-500/30 hover:bg-rose-500/30">
+      <XCircle className="size-3 text-rose-400" aria-hidden="true" />
       Error
     </Badge>
   )
