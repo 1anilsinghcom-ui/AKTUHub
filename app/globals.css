@@ -81,14 +81,21 @@
 
 @layer base {
   * { @apply border-border outline-ring/50; }
-  html { color-scheme: dark; }
+  html {
+    color-scheme: dark;
+    /* Silky smooth scrolling — hardware accelerated */
+    scroll-behavior: smooth;
+    /* iOS momentum scrolling */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent layout shift from scrollbar appearing */
+    scrollbar-gutter: stable;
+  }
   body { @apply bg-background text-foreground; }
 }
 
 /* ═══════════════════════════════════════════════════════════
    APP BACKGROUND — deep cosmic purple-navy
-   Works on all devices — no background-attachment: fixed
-   (that property is broken on iOS Safari)
+   Uses only transform/opacity for animations — no layout repaints
    ═══════════════════════════════════════════════════════════ */
 .bg-app {
   background-color: #04010b;
@@ -97,21 +104,27 @@
     radial-gradient(ellipse 60% 40% at 85% 80%, rgba(99, 102, 241, 0.12) 0%, transparent 50%),
     radial-gradient(ellipse 50% 60% at 50% 50%, rgba(168, 85, 247, 0.06) 0%, transparent 65%),
     linear-gradient(180deg, #06021a 0%, #03010e 60%, #02000a 100%);
-  /* no background-attachment:fixed — broken on iOS */
   background-attachment: scroll;
+  /* promote to own compositor layer — no repaint on scroll */
+  will-change: auto;
+  contain: layout style;
 }
 
-/* Ambient orbs — use transform animation (no CSS custom property hack,
-   which isn't supported on older mobile browsers) */
+/* Static ambient orbs — no position:fixed, no repaint every frame */
 .bg-app::before {
   content: '';
-  position: fixed;
-  inset: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
   pointer-events: none;
   z-index: 0;
   background:
     radial-gradient(circle 45vw at 20% 15%, rgba(139,92,246,0.10) 0%, transparent 70%),
     radial-gradient(circle 40vw at 80% 75%, rgba(99,102,241,0.08) 0%, transparent 70%);
+  /* GPU compositing only — no layout/paint */
+  will-change: opacity;
   animation: orb-pulse 12s ease-in-out infinite alternate;
 }
 
@@ -123,7 +136,7 @@
 
 /* ═══════════════════════════════════════════════════════════
    GLASSMORPHISM — frost-glass cards
-   Cross-platform: works on iOS Safari, Android Chrome, desktop
+   GPU-promoted via translateZ(0) — no repaint on scroll
    ═══════════════════════════════════════════════════════════ */
 .glass {
   background: rgba(255, 255, 255, 0.025) !important;
@@ -134,6 +147,9 @@
     0 8px 32px rgba(0, 0, 0, 0.55),
     inset 0 1px 0 rgba(255, 255, 255, 0.07),
     inset 0 0 0 1px rgba(255, 255, 255, 0.03) !important;
+  /* Own compositor layer */
+  transform: translateZ(0);
+  contain: layout style paint;
 }
 
 .glass-panel {
@@ -145,9 +161,12 @@
     0 12px 40px rgba(0, 0, 0, 0.5),
     inset 0 1px 0 rgba(255, 255, 255, 0.06),
     inset 0 0 0 1px rgba(255, 255, 255, 0.02) !important;
-  transition: all 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  transition: background 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              border-color 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              box-shadow 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+              transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) !important;
+  transform: translateZ(0);
 }
-/* hover + touch-active states */
 .glass-panel:hover,
 .glass-panel:active {
   background: rgba(255, 255, 255, 0.032) !important;
@@ -157,10 +176,9 @@
     0 0 30px rgba(168, 85, 247, 0.08),
     inset 0 1px 0 rgba(255, 255, 255, 0.09),
     inset 0 0 0 1px rgba(168, 85, 247, 0.06) !important;
-  transform: translateY(-1px);
+  transform: translateZ(0) translateY(-1px);
 }
 
-/* frosted-glass card — primary card style */
 .frost-card {
   position: relative;
   background: linear-gradient(
@@ -177,7 +195,7 @@
     inset 0 1px 0 rgba(255, 255, 255, 0.1),
     inset 0 -1px 0 rgba(0, 0, 0, 0.2) !important;
   overflow: hidden;
-  /* smooth transition for touch and hover */
+  transform: translateZ(0);
   transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.2,0.8,0.2,1) !important;
 }
 .frost-card::before {
@@ -189,7 +207,6 @@
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
   pointer-events: none;
 }
-/* hover AND :active (touch tap) both trigger the glow */
 .frost-card:hover,
 .frost-card:active,
 .frost-card:focus-within {
@@ -199,7 +216,7 @@
     0 0 40px rgba(139, 92, 246, 0.1),
     inset 0 1px 0 rgba(255, 255, 255, 0.14),
     inset 0 -1px 0 rgba(0, 0, 0, 0.25) !important;
-  transform: translateY(-2px);
+  transform: translateZ(0) translateY(-2px);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -244,13 +261,17 @@
 
 /* ═══════════════════════════════════════════════════════════
    LIFT CARD — hover + touch active
+   Only animates transform+shadow — no layout repaints
    ═══════════════════════════════════════════════════════════ */
 .lift {
-  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.28s ease, border-color 0.28s ease;
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.28s ease,
+              border-color 0.28s ease;
+  transform: translateZ(0); /* own layer */
 }
 .lift:hover,
 .lift:active {
-  transform: translateY(-3px) scale(1.018);
+  transform: translateZ(0) translateY(-3px) scale(1.018);
   box-shadow: 0 16px 40px -12px rgba(0, 0, 0, 0.7), 0 0 20px rgba(139,92,246,0.1);
   border-color: rgba(139, 92, 246, 0.32) !important;
 }
@@ -513,6 +534,7 @@
 
 /* ═══════════════════════════════════════════════════════════
    UI POLISH — global micro-animations
+   Only composited properties (transform, opacity) animated
    ═══════════════════════════════════════════════════════════ */
 .ui-polish header {
   animation: ee-slide-down 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
@@ -544,18 +566,23 @@
   animation: ee-icon-bob 3.5s ease-in-out infinite;
 }
 
-/* all interactive elements */
+/* Interactive elements — only transition composited properties */
 .ui-polish button,
 .ui-polish [role="button"] {
-  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s ease,
-              border-color 0.25s ease, background-color 0.25s ease, opacity 0.2s ease;
+  transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.25s ease,
+              border-color 0.25s ease,
+              background-color 0.25s ease,
+              opacity 0.2s ease;
 }
 
-/* cards hover polish */
+/* Cards hover — specific properties only, no 'all' */
 .ui-polish .rounded-2xl.border,
 .ui-polish .rounded-xl.border {
-  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.3s ease,
-              border-color 0.3s ease, background-color 0.3s ease;
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+              box-shadow 0.3s ease,
+              border-color 0.3s ease,
+              background-color 0.3s ease;
 }
 
 .ui-polish footer {
@@ -564,6 +591,31 @@
 
 /* sparkle icon spin */
 .sparkle-icon { animation: sparkle-spin 4s linear infinite; }
+
+/* ═══════════════════════════════════════════════════════════
+   SMOOTH CUSTOM SCROLLBAR
+   Thin, minimal, matches the dark theme
+   ═══════════════════════════════════════════════════════════ */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(139, 92, 246, 0.35);
+  border-radius: 9999px;
+  transition: background 0.2s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(168, 85, 247, 0.65);
+}
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(139, 92, 246, 0.35) transparent;
+}
 
 /* ═══════════════════════════════════════════════════════════
    STAT / METRIC CARDS — number counter entrance
@@ -597,3 +649,229 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   LIGHT THEME  —  [data-theme="light"]
+   Clean white base, soft purple-blue radial glow at top-center,
+   crisp card surfaces with real depth. Purple accents preserved.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Page background ── */
+[data-theme="light"].bg-app-light {
+  background-color: #f8f8fc;
+  background-image:
+    radial-gradient(ellipse 90% 55% at 50% -5%,  rgba(139,92,246,0.13) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 90%,  rgba(99,102,241,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 35% at 10% 80%,  rgba(168,85,247,0.05) 0%, transparent 50%);
+}
+[data-theme="light"].bg-app-light::before { display: none; }
+
+/* ── Sticky header ── */
+[data-theme="light"] header.glass {
+  background: rgba(255,255,255,0.92) !important;
+  backdrop-filter: blur(20px) saturate(160%) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
+  border-bottom-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.06), 0 4px 20px rgba(0,0,0,0.05) !important;
+}
+
+/* ── Hero section ── */
+[data-theme="light"] section.relative.overflow-hidden.border-b {
+  background: transparent !important;
+}
+[data-theme="light"] section.relative.overflow-hidden.border-b .absolute.inset-0 {
+  opacity: 0.4 !important;
+}
+[data-theme="light"] section.relative.overflow-hidden.border-b {
+  border-bottom-color: rgba(0,0,0,0.07) !important;
+}
+
+/* ── All panel / card surfaces ── */
+[data-theme="light"] .rounded-2xl,
+[data-theme="light"] .rounded-xl {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04) !important;
+}
+[data-theme="light"] .rounded-2xl:hover,
+[data-theme="light"] .rounded-xl:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08), 0 8px 32px rgba(139,92,246,0.08) !important;
+  border-color: rgba(139,92,246,0.20) !important;
+}
+
+/* ── Tab nav cards ── */
+[data-theme="light"] button.rounded-2xl[aria-pressed="false"] {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+}
+[data-theme="light"] button.rounded-2xl[aria-pressed="false"]:hover {
+  background: #fafaff !important;
+  border-color: rgba(139,92,246,0.28) !important;
+  box-shadow: 0 4px 20px rgba(139,92,246,0.10), 0 1px 4px rgba(0,0,0,0.05) !important;
+}
+[data-theme="light"] button.rounded-2xl[aria-pressed="true"] {
+  background: linear-gradient(135deg, rgba(139,92,246,0.09) 0%, rgba(99,102,241,0.05) 100%) !important;
+  border-color: rgba(139,92,246,0.35) !important;
+  box-shadow: 0 0 0 1px rgba(139,92,246,0.15), 0 4px 20px rgba(139,92,246,0.12) !important;
+}
+
+/* ── Text ── */
+[data-theme="light"] h1,
+[data-theme="light"] h2,
+[data-theme="light"] h3,
+[data-theme="light"] h4,
+[data-theme="light"] .text-white {
+  color: #0f0f14 !important;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.10), 0 2px 8px rgba(139,92,246,0.06) !important;
+}
+
+[data-theme="light"] p,
+[data-theme="light"] span:not([class*="text-purple"]):not([class*="text-cyan"]):not([class*="text-violet"]):not([class*="text-indigo"]):not([class*="text-emerald"]):not([class*="text-rose"]),
+[data-theme="light"] .text-slate-400 { color: #3f3f50 !important; text-shadow: none !important; }
+
+[data-theme="light"] .text-slate-500 { color: #6b6b80 !important; text-shadow: none !important; }
+[data-theme="light"] .text-slate-300 { color: #2d2d3a !important; text-shadow: none !important; }
+[data-theme="light"] .text-slate-200 { color: #1e1e2a !important; text-shadow: none !important; }
+[data-theme="light"] .text-muted-foreground { color: #5a5a70 !important; text-shadow: none !important; }
+
+/* Accent colors — swap pastels for deep saturated equivalents */
+[data-theme="light"] .text-purple-200  { color: #7c3aed !important; text-shadow: none !important; }
+[data-theme="light"] .text-purple-300  { color: #6d28d9 !important; text-shadow: none !important; }
+[data-theme="light"] .text-cyan-200    { color: #0891b2 !important; text-shadow: none !important; }
+[data-theme="light"] .text-cyan-300    { color: #0e7490 !important; text-shadow: none !important; }
+[data-theme="light"] .text-violet-200  { color: #6d28d9 !important; text-shadow: none !important; }
+[data-theme="light"] .text-violet-300  { color: #5b21b6 !important; text-shadow: none !important; }
+[data-theme="light"] .text-indigo-300  { color: #4338ca !important; text-shadow: none !important; }
+[data-theme="light"] .text-emerald-200 { color: #059669 !important; text-shadow: none !important; }
+[data-theme="light"] .text-rose-300    { color: #e11d48 !important; text-shadow: none !important; }
+[data-theme="light"] .text-blue-200    { color: #1d4ed8 !important; text-shadow: none !important; }
+
+/* Tracking labels (PLATFORM PROFILE, etc.) stay bold and readable */
+[data-theme="light"] .uppercase.tracking-\[0\.22em\],
+[data-theme="light"] [class*="tracking-"] {
+  text-shadow: none !important;
+}
+
+/* Footer text */
+[data-theme="light"] footer .text-slate-400  { color: #52526a !important; }
+[data-theme="light"] footer .text-slate-500  { color: #6b6b80 !important; }
+[data-theme="light"] footer .text-slate-200  { color: #1e1e2a !important; }
+[data-theme="light"] footer .text-slate-300  { color: #2d2d3a !important; }
+[data-theme="light"] footer .text-white      { color: #0f0f14 !important; text-shadow: none !important; }
+
+/* ── Inputs ── */
+[data-theme="light"] input,
+[data-theme="light"] .glass-input {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.12) !important;
+  color: #18181b !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05) !important;
+}
+[data-theme="light"] input::placeholder,
+[data-theme="light"] .glass-input::placeholder { color: #a1a1aa !important; }
+[data-theme="light"] input:focus,
+[data-theme="light"] .glass-input:focus {
+  border-color: rgba(139,92,246,0.50) !important;
+  box-shadow: 0 0 0 3px rgba(139,92,246,0.10) !important;
+  background: #ffffff !important;
+}
+
+/* ── Glass panel (upload zones, etc.) ── */
+[data-theme="light"] .glass-panel {
+  background: #ffffff !important;
+  border-color: rgba(0,0,0,0.08) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04) !important;
+}
+
+/* ── Footer ── */
+[data-theme="light"] footer {
+  background: #f2f2f7 !important;
+  border-top-color: rgba(0,0,0,0.07) !important;
+}
+[data-theme="light"] footer .border-t { border-top-color: rgba(0,0,0,0.07) !important; }
+
+/* ── Neon line → very subtle in light ── */
+[data-theme="light"] .neon-line {
+  background: linear-gradient(90deg, transparent, rgba(139,92,246,0.25), transparent) !important;
+  opacity: 0.6;
+}
+
+/* ── Misc borders ── */
+[data-theme="light"] .border-white\/10,
+[data-theme="light"] .border-white\/\[0\.06\],
+[data-theme="light"] .border-white\/\[0\.07\],
+[data-theme="light"] .border-white\/\[0\.10\],
+[data-theme="light"] .border-white\/\[0\.14\] {
+  border-color: rgba(0,0,0,0.08) !important;
+}
+
+/* ── Scrollbar ── */
+[data-theme="light"] ::-webkit-scrollbar-thumb  { background: rgba(0,0,0,0.18) !important; }
+[data-theme="light"] ::-webkit-scrollbar-track  { background: rgba(0,0,0,0.03) !important; }
+
+/* ── Hero animated title — deeper gradient in light mode ── */
+[data-theme="light"] .hero-title-main {
+  background: linear-gradient(
+    120deg,
+    #5b21b6 0%,
+    #7c3aed 20%,
+    #4f46e5 40%,
+    #6d28d9 60%,
+    #7c3aed 80%,
+    #5b21b6 100%
+  ) !important;
+  background-size: 300% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: hero-shimmer 5s linear infinite !important;
+  text-shadow: none !important;
+}
+
+[data-theme="light"] .hero-title-sub {
+  background: linear-gradient(
+    135deg,
+    #1d4ed8 0%,
+    #4338ca 30%,
+    #7c3aed 60%,
+    #4f46e5 100%
+  ) !important;
+  background-size: 250% auto !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  animation: hero-shimmer 7s linear infinite reverse !important;
+  text-shadow: none !important;
+}
+
+/* "in one place." subtitle — not gradient, just dark */
+[data-theme="light"] .text-white\/80 {
+  color: #3f3f50 !important;
+  -webkit-text-fill-color: #3f3f50 !important;
+  text-shadow: none !important;
+}
+
+/* Hero badge text */
+[data-theme="light"] .hero-badge {
+  color: #6d28d9 !important;
+  border-color: rgba(109,40,217,0.25) !important;
+  background: rgba(109,40,217,0.07) !important;
+}
+
+/* Feature pills */
+[data-theme="light"] .text-purple-200.backdrop-blur-sm {
+  color: #6d28d9 !important;
+  border-color: rgba(109,40,217,0.20) !important;
+  background: rgba(109,40,217,0.06) !important;
+}
+
+/* Tab card text */
+[data-theme="light"] .text-purple-100 { color: #4c1d95 !important; text-shadow: none !important; }
+
+/* "Coming Soon" / "Available Now" badge text */
+[data-theme="light"] .text-blue-200   { color: #1d4ed8 !important; }
+[data-theme="light"] .text-emerald-200 { color: #047857 !important; }
+
+/* Description under hero title */
+[data-theme="light"] .text-indigo-300 { color: #3730a3 !important; }

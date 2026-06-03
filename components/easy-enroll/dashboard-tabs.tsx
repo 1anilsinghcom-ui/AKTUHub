@@ -1,7 +1,6 @@
 "use client"
 
 import {
-  BookOpen,
   Calculator,
   FileCheck2,
   Info,
@@ -10,7 +9,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
-export type DashboardTab = "enrollment" | "study" | "faculty" | "utilities" | "about"
+export type DashboardTab = "enrollment" | "tools" | "about"
 
 interface TabConfig {
   id: DashboardTab
@@ -27,22 +26,10 @@ const tabs: TabConfig[] = [
     icon: FileCheck2,
   },
   {
-    id: "study",
-    title: "Study Hub",
-    description: "Notes, PYQs, materials, syllabus",
-    icon: BookOpen,
-  },
-  {
-    id: "faculty",
-    title: "Faculty Tools",
-    description: "Management and analytics tools",
+    id: "tools",
+    title: "Toolkit",
+    description: "Calculators, compressor & utilities",
     icon: LayoutDashboard,
-  },
-  {
-    id: "utilities",
-    title: "Utilities",
-    description: "Calculators, geo-tag and file tools",
-    icon: Calculator,
   },
   {
     id: "about",
@@ -60,7 +47,7 @@ interface DashboardTabsProps {
 export function DashboardTabs({ activeTab, onTabChange }: DashboardTabsProps) {
   return (
     <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6 lg:pt-8">
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-5">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
         {tabs.map((tab) => (
           <TabCard
             key={tab.id}

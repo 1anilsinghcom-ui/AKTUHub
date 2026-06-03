@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useState } from "react"
+import { useCallback, useState, lazy, Suspense } from "react"
 import JSZip from "jszip"
 import { saveAs } from "file-saver"
 import {
@@ -11,13 +11,11 @@ import {
 } from "lucide-react"
 import { toast } from "sonner"
 import { Toaster } from "@/components/ui/sonner"
-import { AboutContent } from "./about-content"
 import { AppHeader } from "./app-header"
 import { DashboardTabs, type DashboardTab } from "./dashboard-tabs"
 import { EnrollmentContent } from "./enrollment-content"
-import { FacultyContent, UtilitiesContent } from "./placeholder-content"
-import { StudyHubContent } from "./study-hub-content"
 import { Footer } from "./footer"
+import { AppThemeProvider, useAppTheme } from "./theme-context"
 import { EMPTY_STUDENT, type DocItem, type StudentInfo } from "./types"
 import {
   DOC_SPECS,
@@ -32,6 +30,18 @@ import {
   getDownloadableItems,
 } from "@/lib/enrollment-engine"
 import { processDocument } from "@/lib/processing"
+
+// Lazy-load non-critical tabs — smaller initial bundle, faster first paint
+const AboutContent = lazy(() => import("./about-content").then(m => ({ default: m.AboutContent })))
+const FacultyAndUtilitiesContent = lazy(() => import("./placeholder-content").then(m => ({ default: m.FacultyAndUtilitiesContent })))
+
+function TabFallback() {
+  return (
+    <div className="flex items-center justify-center py-24">
+      <div className="size-8 animate-spin rounded-full border-2 border-purple-500/20 border-t-purple-400" />
+    </div>
+  )
+}
 
 const PDF_PLACEHOLDER =
   "data:image/svg+xml;utf8," +
@@ -53,6 +63,15 @@ function resolveOutputName(item: DocItem, student: StudentInfo) {
 }
 
 export function AKTUHubApp() {
+  return (
+    <AppThemeProvider>
+      <AKTUHubAppInner />
+    </AppThemeProvider>
+  )
+}
+
+function AKTUHubAppInner() {
+  const { theme } = useAppTheme()
   const [activeTab, setActiveTab] = useState<DashboardTab>("enrollment")
   const [student, setStudent] = useState<StudentInfo>(EMPTY_STUDENT)
   const [items, setItems] = useState<DocItem[]>([])
@@ -254,10 +273,16 @@ export function AKTUHubApp() {
   )
 
   const renderTabContent = () => {
-    if (activeTab === "study") return <StudyHubContent />
-    if (activeTab === "faculty") return <FacultyContent />
-    if (activeTab === "utilities") return <UtilitiesContent />
-    if (activeTab === "about") return <AboutContent />
+    if (activeTab === "tools") return (
+      <Suspense fallback={<TabFallback />}>
+        <FacultyAndUtilitiesContent />
+      </Suspense>
+    )
+    if (activeTab === "about") return (
+      <Suspense fallback={<TabFallback />}>
+        <AboutContent />
+      </Suspense>
+    )
 
     return (
       <EnrollmentContent
@@ -281,7 +306,10 @@ export function AKTUHubApp() {
   }
 
   return (
-    <div className="ui-polish min-h-screen bg-app">
+    <div
+      data-theme={theme}
+      className={`ui-polish min-h-screen ${theme === "light" ? "bg-app-light" : "bg-app"}`}
+    >
       <Toaster position="top-center" richColors />
       <AppHeader />
 

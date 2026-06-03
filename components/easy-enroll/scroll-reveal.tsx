@@ -91,10 +91,11 @@ export function ScrollReveal({
         transitionDuration: `${duration}ms`,
         transitionDelay: isVisible ? `${delay}ms` : "0ms",
         transitionTimingFunction: "cubic-bezier(0.2, 0.8, 0.2, 1)",
-        transitionProperty: "opacity, transform, filter",
+        transitionProperty: "opacity, transform",
+        // Only hint GPU during the animation window — release after
+        willChange: isVisible ? "auto" : "transform, opacity",
       }}
       className={cn(
-        "will-change-[transform,opacity]",
         isVisible ? "opacity-100 translate-y-0 translate-x-0 scale-100" : getHiddenClass(),
         className,
       )}

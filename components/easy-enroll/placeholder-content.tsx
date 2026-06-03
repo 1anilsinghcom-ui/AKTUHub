@@ -79,6 +79,50 @@ export function FacultyContent() {
   )
 }
 
+export function FacultyAndUtilitiesContent() {
+  const [compressorOpen, setCompressorOpen] = useState(false)
+  const [cgpaOpen, setCgpaOpen] = useState(false)
+
+  return (
+    <section className="space-y-6">
+      <FeatureSection
+        eyebrow="Faculty productivity"
+        title="Faculty Tools"
+        subtitle="Productivity and management tools for faculty members."
+        items={facultyItems}
+      />
+
+      <Dialog open={compressorOpen} onOpenChange={setCompressorOpen}>
+        <FeatureSection
+          eyebrow="Academic utilities"
+          title="Utilities"
+          subtitle="Helpful tools for AKTU students and faculty."
+          items={utilityItems}
+          onCompressorOpen={() => setCompressorOpen(true)}
+          onCgpaOpen={() => setCgpaOpen(true)}
+        />
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+          <DialogHeader>
+            <DialogTitle>All-in-One File Compressor</DialogTitle>
+            <DialogDescription>Compress images, PDFs, and documents to your target file size</DialogDescription>
+          </DialogHeader>
+          <FileCompressor />
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={cgpaOpen} onOpenChange={setCgpaOpen}>
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle></DialogTitle>
+            <DialogDescription></DialogDescription>
+          </DialogHeader>
+          <SGPAToCGPACalculator />
+        </DialogContent>
+      </Dialog>
+    </section>
+  )
+}
+
 export function UtilitiesContent() {
   const [compressorOpen, setCompressorOpen] = useState(false)
   const [cgpaOpen, setCgpaOpen] = useState(false)

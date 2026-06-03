@@ -10,9 +10,7 @@ interface FooterProps {
 
 const quickLinks: Array<{ label: string; tab: DashboardTab }> = [
   { label: "Enrollment", tab: "enrollment" },
-  { label: "Study Hub", tab: "study" },
-  { label: "Faculty Tools", tab: "faculty" },
-  { label: "Utilities", tab: "utilities" },
+  { label: "Toolkit", tab: "tools" },
   { label: "About", tab: "about" },
 ]
 
